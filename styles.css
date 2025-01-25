@@ -1,0 +1,96 @@
+body {
+  background:
+    linear-gradient(to bottom,
+      #ffffff 0%,
+      #ffffff 10%,
+      #f4f4f4 10%,
+      #f4f4f4 20%,
+      #e8e8e8 20%,
+      #e8e8e8 30%,
+      #dcdcdc 30%,
+      #dcdcdc 40%,
+      #d0d0d0 40%,
+      #d0d0d0 50%,
+      #c4c4c4 50%,
+      #c4c4c4 60%,
+      #b8b8b8 60%,
+      #b8b8b8 70%,
+      #acacac 70%,
+      #acacac 80%,
+      #a0a0a0 80%,
+      #a0a0a0 90%,
+      #949494 90%,
+      #949494 100%);
+  background-size: 100% 100vh;
+  background-repeat: no-repeat;
+  font-family: 'Courier ', monospace;
+  font-size: 16px;
+  color: black;
+}
+h1 {
+  text-align: center;
+  font-size: 36px;
+  margin-top: 50px;
+}
+
+.container {
+  display: flex;
+  height: 70vh;
+  justify-content: space-around;
+}
+
+.white-container {
+  width: 30%;
+  padding: 25px 50px 25px 50px;
+  background-color: #fff;
+  border-radius: 16px;
+}
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 100%;
+  width: 100%;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.calculate-btn {
+  background-color: #646464;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px;
+  font-family: 'Courier ', monospace;
+  font-size: 16px;
+}
+
+.calculate-btn:hover {
+  background-color: #4CAF50;
+}
+
+.white-container p {
+  background-color: #646464;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
+  width: 100%;
+}
+
+.result {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
