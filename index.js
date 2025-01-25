@@ -115,6 +115,7 @@ function TriangleIdentify(side1, side2, side3) {
   return Output({ exception: "Triangle type doesn't match" });
 }
 
+//Show output
 function Output(message) {
   if (result in message) return message.result;
   if (exception in message) throw new Error(message.exception);
