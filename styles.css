@@ -1,29 +1,30 @@
 body {
-  background:
-    linear-gradient(to bottom,
-      #ffffff 0%,
-      #ffffff 10%,
-      #f4f4f4 10%,
-      #f4f4f4 20%,
-      #e8e8e8 20%,
-      #e8e8e8 30%,
-      #dcdcdc 30%,
-      #dcdcdc 40%,
-      #d0d0d0 40%,
-      #d0d0d0 50%,
-      #c4c4c4 50%,
-      #c4c4c4 60%,
-      #b8b8b8 60%,
-      #b8b8b8 70%,
-      #acacac 70%,
-      #acacac 80%,
-      #a0a0a0 80%,
-      #a0a0a0 90%,
-      #949494 90%,
-      #949494 100%);
+  background: linear-gradient(
+    to bottom,
+    #ffffff 0%,
+    #ffffff 10%,
+    #f4f4f4 10%,
+    #f4f4f4 20%,
+    #e8e8e8 20%,
+    #e8e8e8 30%,
+    #dcdcdc 30%,
+    #dcdcdc 40%,
+    #d0d0d0 40%,
+    #d0d0d0 50%,
+    #c4c4c4 50%,
+    #c4c4c4 60%,
+    #b8b8b8 60%,
+    #b8b8b8 70%,
+    #acacac 70%,
+    #acacac 80%,
+    #a0a0a0 80%,
+    #a0a0a0 90%,
+    #949494 90%,
+    #949494 100%
+  );
   background-size: 100% 100vh;
   background-repeat: no-repeat;
-  font-family: 'Courier ', monospace;
+  font-family: "Courier ", monospace;
   font-size: 16px;
   color: black;
 }
@@ -85,12 +86,12 @@ h1 {
   border: none;
   border-radius: 4px;
   padding: 10px;
-  font-family: 'Courier ', monospace;
+  font-family: "Courier ", monospace;
   font-size: 16px;
 }
 
 .calculate-btn:hover {
-  background-color: #4CAF50;
+  background-color: #4caf50;
 }
 
 .white-container p {
@@ -109,7 +110,7 @@ h1 {
   justify-content: center;
 }
 
-.triangle-image img{
+.triangle-image img {
   width: 100%;
   height: 100%;
   justify-content: center;
@@ -128,4 +129,90 @@ h1 {
   align-items: center;
   height: 100%;
   width: 100%;
+}
+
+@media (max-width: 500px) {
+  body {
+    background: linear-gradient(
+      to bottom,
+      #ffffff 0%,
+      #ffffff 5%,
+      #f4f4f4 5%,
+      #f4f4f4 10%,
+      #e8e8e8 10%,
+      #e8e8e8 15%,
+      #dcdcdc 15%,
+      #dcdcdc 20%,
+      #d0d0d0 20%,
+      #d0d0d0 25%,
+      #c4c4c4 25%,
+      #c4c4c4 30%,
+      #b8b8b8 30%,
+      #b8b8b8 35%,
+      #acacac 35%,
+      #acacac 40%,
+      #a0a0a0 40%,
+      #a0a0a0 45%,
+      #949494 45%,
+      #949494 50%,
+      #919191 50%,
+      #919191 55%,
+      #8c8c8c 55%,
+      #8c8c8c 60%,
+      #878787 60%,
+      #878787 65%,
+      #828282 65%,
+      #828282 70%,
+      #7d7d7d 70%,
+      #7d7d7d 75%,
+      #787878 75%,
+      #787878 80%,
+      #737373 80%,
+      #737373 85%,
+      #6e6e6e 85%,
+      #6e6e6e 90%,
+      #696969 90%,
+      #696969 95%,
+      #646464 95%,
+      #646464 100%
+    );
+    background-repeat: repeat;
+    font-size: 10px;
+  }
+
+  h1 {
+    font-size: 20px;
+    margin-top: 20px;
+  }
+  .container {
+    padding-left: 10vw;
+    padding-right: 10vw;
+  }
+
+  .flex-container {
+    flex-wrap: wrap;
+    height: 50vh;
+    width: 50vh;
+  }
+
+  .input-group input {
+    font-size: 10px;
+  }
+
+  .calculate-btn {
+    font-size: 10px;
+  }
+
+  .white-container {
+    margin-bottom: 10vw;
+  }
+
+  .white-container p {
+    font-size: 10px;
+  }
+
+  .input-group {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
 }
