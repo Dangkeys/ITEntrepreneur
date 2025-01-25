@@ -158,3 +158,33 @@ function updateTriangleImage(imageName) {
   const triangleImage = document.querySelector(".triangle-image img");
   triangleImage.src = `./Triangles/${imageName}`;
 }
+
+
+// Wait for the DOM to load
+document.addEventListener("DOMContentLoaded", () => {
+    // Get references to the necessary elements
+    const form = document.querySelector("form");
+    const resultDiv = document.querySelector(".result");
+    const whiteContainers = document.querySelectorAll(".white-container");
+
+    // Check if we have the correct number of white-container elements
+    if (whiteContainers.length >= 2) {
+        const secondContainer = whiteContainers[1];
+
+        // Hide the result section and second white container initially
+        resultDiv.style.display = "none";
+        secondContainer.style.display = "none";
+
+        // Add an event listener to the form submission
+        form.addEventListener("submit", (event) => {
+            // Prevent the default form submission behavior
+            event.preventDefault();
+
+            // Show the second white container and the result section
+            secondContainer.style.display = "block";
+            resultDiv.style.display = "block";
+        });
+    } else {
+        console.error("Second white-container not found!");
+    }
+});
