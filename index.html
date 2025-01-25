@@ -1,11 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Triangle Type Calculator</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-    
+    <div class="triangle-calculator">
+
+        
+    </div>
+    <h1>Triangle Type <br>Calculator</h1>
+    <div class="container">
+        <form class="white-container">
+            <div class="inputs">
+                Enter the lengths of the three sides of a triangle to know the type of triangle.
+                <div class="input-group">
+                    <label for="side1">Side 1</label>
+                    <input type="number" id="side1" name="side1" required>
+                </div>
+                <div class="input-group">
+                    <label for="side2">Side 2</label>
+                    <input type="number" id="side2" name="side2" required>
+                </div>
+                <div class="input-group">
+                    <label for="side3">Side 3</label>
+                    <input type="number" id="side3" name="side3" required>
+                </div>
+                <button type="submit" class="calculate-btn">Calculate Triangle Type</button>
+            </div>
+        </form>
+
+        <div class="white-container">
+            <div class="result">
+                <b>Triangle Type Result</b>
+                <div class="triangle-image">
+                    <img src="data:image/png;base64,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"
+                        alt="Triangle">
+                </div>
+                <p class="type">Equilateral Triangle</p>
+            </div>
+        </div>
+
+        <script src="index.js"></script>
 </body>
+
 </html>
