@@ -117,6 +117,6 @@ function TriangleIdentify(side1, side2, side3) {
 
 //Show output
 function Output(message) {
-  if (result in message) return message.result;
-  if (exception in message) throw new Error(message.exception);
+  if ("result" in message) return message.result;
+  if ("exception" in message) throw new Error(message.exception);
 }
