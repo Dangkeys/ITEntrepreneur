@@ -67,17 +67,21 @@ function ValidateTriangle(side1, side2, side3) {
 function TriangleIdentify(side1, side2, side3) {
   // Check for Equilateral Triangle
   if (side1 === side2 && side2 === side3) {
+    updateTriangleImage("equilateral.png");
     return Output({ result: "Equilateral Triangle/สามเหลี่ยมด้านเท่า" });
   }
 
   // Check for Isosceles Triangle
   if (side1 === side2 || side1 === side3 || side2 === side3) {
+    updateTriangleImage("isosceles.png");
     return Output({ result: "Isosceles Triangle/สามเหลี่ยมหน้าจั่ว" });
   }
 
   // Check for Scalene Triangle
-  if (side1 !== side2 && side2 !== side3 && side1 !== side3)
+  if (side1 !== side2 && side2 !== side3 && side1 !== side3) {
+    updateTriangleImage("scalene.png");
     return Output({ result: "Scalene Triangle/สามเหลี่ยมด้านไม่เท่า" });
+  }
 
   // Check for Right Triangle
   if (
@@ -85,6 +89,7 @@ function TriangleIdentify(side1, side2, side3) {
     side2 ** 2 === side1 ** 2 + side3 ** 2 ||
     side3 ** 2 === side1 ** 2 + side2 ** 2
   ) {
+    updateTriangleImage('right.png');
     return Output({ result: "Right Triangle/สามเหลี่ยมมุมฉาก" });
   }
 
@@ -94,6 +99,7 @@ function TriangleIdentify(side1, side2, side3) {
     side2 ** 2 < side1 ** 2 + side3 ** 2 &&
     side3 ** 2 < side1 ** 2 + side2 ** 2
   ) {
+    updateTriangleImage("acute.png");
     return Output({ result: "Acute Triangle/สามเหลี่ยมมุมแหลม" });
   }
 
@@ -103,6 +109,7 @@ function TriangleIdentify(side1, side2, side3) {
     side2 ** 2 > side1 ** 2 + side3 ** 2 ||
     side3 ** 2 > side1 ** 2 + side2 ** 2
   ) {
+    updateTriangleImage("obtuse.png");
     return Output({ result: "Obtuse Triangle/สามเหลี่ยมมุมป้าน" });
   }
 
@@ -114,4 +121,40 @@ function TriangleIdentify(side1, side2, side3) {
 function Output(message) {
   if ("result" in message) return message.result;
   if ("exception" in message) throw new Error(message.exception);
+}
+
+document.addEventListener('DOMContentLoaded',() => {
+  const form = document.querySelector("form");
+  const resultText = document.querySelector(".type");
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault(); // Prevent page reload
+
+    // Get input values
+    const side1 = parseFloat(document.getElementById("side1").value);
+    const side2 = parseFloat(document.getElementById("side2").value);
+    const side3 = parseFloat(document.getElementById("side3").value);
+
+    // Validate inputs
+    const inputValidation = ValidateInputs(side1, side2, side3);
+    if (!inputValidation.isValid) {
+      resultText.textContent = inputValidation.error;
+      return;
+    }
+
+    // Validate if it's a triangle
+    const triangleValidation = ValidateTriangle(side1, side2, side3);
+    if (!triangleValidation.isTriangle) {
+      resultText.textContent = triangleValidation.error;
+      return;
+    }
+
+    // Identify triangle type
+    const triangleType = TriangleIdentify(side1, side2, side3);
+    resultText.textContent = `The triangle is a ${triangleType}.`;
+  });
+});
+function updateTriangleImage(imageName) {
+  const triangleImage = document.querySelector(".triangle-image img");
+  triangleImage.src = `./Triangles/${imageName}`;
 }
