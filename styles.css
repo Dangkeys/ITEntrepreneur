@@ -51,6 +51,18 @@ h1 {
   border-radius: 16px;
 }
 
+.error-container {
+  width: 35%;
+  padding: 25px 50px 25px 50px;
+  background-color: #ee7171;
+  border-radius: 16px;
+  height: 20%;
+}
+
+.error-result {
+  color: white;
+}
+
 .inputs {
   display: flex;
   flex-direction: column;
