@@ -1,11 +1,66 @@
-// How to create variables:
-var x;
-let y;
+// Input Validation Module
+function ValidateInputs(side1, side2, side3) {
+    try {
+        // Check if there are exactly three inputs
+        if (arguments.length !== 3) {
+            throw new Error("Please complete all fields with valid numbers.");
+        }
 
-// How to use variables:
-x = 5;
-y = 6;
-let z = x + y;
+        // Check if all inputs are numbers
+        const sides = [side1, side2, side3];
+        if (!sides.every((side) => typeof side === 'number')) {
+            throw new Error("Input numbers only, please.");
+        }
+
+        // Check if numbers are in the correct format (e.g., not 3.1.2)
+        if (!sides.every((side) => /^\d+(\.\d{1,2})?$/.test(side.toString()))) {
+            throw new Error("Please input a valid number, for example, 3.5");
+        }
+
+        // Check if numbers have no more than 2 decimal places
+        if (!sides.every((side) => side.toString().split('.')[1]?.length <= 2 || !side.toString().includes('.'))) {
+            throw new Error("Decimal numbers should not exceed two decimal places.");
+        }
+
+        // Check if numbers are within the valid range (greater than 0 and not exceeding 10,000)
+        if (!sides.every((side) => side > 0 && side <= 10000)) {
+            if (sides.some((side) => side <= 0)) {
+                throw new Error("Side length cannot be 0 or negative.");
+            }
+            if (sides.some((side) => side > 10000)) {
+                throw new Error("Error: The length exceeds the allowed limit (10,000).");
+            }
+        }
+
+        return { isValid: true, sides };
+    } catch (error) {
+        return { isValid: false, error: error.message };
+    }
+}
+
+// Triangle Validation Module
+function ValidateTriangle(side1, side2, side3) {
+    try {
+        // Validate triangle inequality theorem
+        if (
+            side1 + side2 > side3 &&
+            side1 + side3 > side2 &&
+            side2 + side3 > side1
+        ) {
+            return { isTriangle: true, sides: [side1, side2, side3] };
+        } else {
+            throw new Error("Not a triangle");
+        }
+    } catch (error) {
+        return { isTriangle: false, error: error.message };
+    }
+}
+
+
+// Export functions for external use
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { ValidateInputs, ValidateTriangle, main };
+}
 
 function TriangleIdentify(side1, side2, side3) {
   if (side1 === side2 && side1 === side2 && side2 === side3)
