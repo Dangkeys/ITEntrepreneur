@@ -64,11 +64,6 @@ function ValidateTriangle(side1, side2, side3) {
   }
 }
 
-// Export functions for external use
-if (typeof module !== "undefined" && module.exports) {
-  module.exports = { ValidateInputs, ValidateTriangle, main };
-}
-
 function TriangleIdentify(side1, side2, side3) {
   // Check for Equilateral Triangle
   if (side1 === side2 && side2 === side3) {
