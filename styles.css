@@ -28,22 +28,39 @@ body {
   color: black;
 }
 h1 {
-  text-align: center;
+  text-align: left;
   font-size: 36px;
   margin-top: 50px;
 }
 
 .container {
+  padding-left: 15vw;
+  padding-right: 15vw;
+}
+
+.flex-container {
   display: flex;
   height: 70vh;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 .white-container {
-  width: 30%;
+  width: 35%;
   padding: 25px 50px 25px 50px;
   background-color: #fff;
   border-radius: 16px;
+}
+
+.error-container {
+  width: 35%;
+  padding: 25px 50px 25px 50px;
+  background-color: #ee7171;
+  border-radius: 16px;
+  height: 20%;
+}
+
+.error-result {
+  color: white;
 }
 
 .inputs {
@@ -84,6 +101,24 @@ h1 {
   padding: 10px;
   font-size: 16px;
   width: 100%;
+}
+
+.white-container .triangle-image {
+  width: 100%;
+  height: 70%;
+  justify-content: center;
+}
+
+.triangle-image img{
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+}
+
+.white-container .type {
+  width: 100%;
+  justify-content: center;
+  margin: 0px;
 }
 
 .result {

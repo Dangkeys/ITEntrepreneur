@@ -11,37 +11,45 @@
 <body>
     <div class="triangle-calculator">
 
-        
-    </div>
-    <h1>Triangle Type <br>Calculator</h1>
-    <div class="container">
-        <form class="white-container">
-            <div class="inputs">
-                Enter the lengths of the three sides of a triangle to know the type of triangle.
-                <div class="input-group">
-                    <label for="side1">Side 1</label>
-                    <input type="number" id="side1" name="side1" required>
-                </div>
-                <div class="input-group">
-                    <label for="side2">Side 2</label>
-                    <input type="number" id="side2" name="side2" required>
-                </div>
-                <div class="input-group">
-                    <label for="side3">Side 3</label>
-                    <input type="number" id="side3" name="side3" required>
-                </div>
-                <button type="submit" class="calculate-btn">Calculate Triangle Type</button>
-            </div>
-        </form>
 
-        <div class="white-container">
-            <div class="result">
-                <b>Triangle Type Result</b>
-                <div class="triangle-image">
-                    <img src="./Triangles/equilateral.png"
-                        alt="Triangle">
+    </div>
+    <div class="container">
+        <h1>Triangle Type <br>Calculator</h1>
+        <div class="flex-container">
+            <form class="white-container">
+                <div class="inputs">
+                    Enter the lengths of the three sides of a triangle to know the type of triangle.
+                    <div class="input-group">
+                        <label for="side1">Side 1</label>
+                        <input type="number" id="side1" name="side1" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="side2">Side 2</label>
+                        <input type="number" id="side2" name="side2" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="side3">Side 3</label>
+                        <input type="number" id="side3" name="side3" required>
+                    </div>
+                    <button type="submit" class="calculate-btn">Calculate Triangle Type</button>
                 </div>
-                <p class="type">Equilateral Triangle</p>
+            </form>
+
+            <div class="white-container">
+                <div class="result">
+                    <b>Triangle Type Result</b>
+                    <div class="triangle-image">
+                        <img src="./Triangles/equilateral.png" alt="Triangle">
+                    </div>
+                    <p class="type">Equilateral Triangle</p>
+                </div>
+            </div>
+
+            <div class="error-container">
+                <div class="error-result">
+                    <b>! Not a Triangle</b>
+                    <p class="error-type">Equilateral Triangle</p>
+                </div>
             </div>
         </div>
 

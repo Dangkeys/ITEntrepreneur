@@ -123,38 +123,51 @@ function Output(message) {
   if ("exception" in message) throw new Error(message.exception);
 }
 
-document.addEventListener('DOMContentLoaded',() => {
-  const form = document.querySelector("form");
-  const resultText = document.querySelector(".type");
-
-  form.addEventListener("submit", (event) => {
-    event.preventDefault(); // Prevent page reload
-
-    // Get input values
-    const side1 = parseFloat(document.getElementById("side1").value);
-    const side2 = parseFloat(document.getElementById("side2").value);
-    const side3 = parseFloat(document.getElementById("side3").value);
-
-    // Validate inputs
-    const inputValidation = ValidateInputs(side1, side2, side3);
-    if (!inputValidation.isValid) {
-      resultText.textContent = inputValidation.error;
-      return;
-    }
-
-    // Validate if it's a triangle
-    const triangleValidation = ValidateTriangle(side1, side2, side3);
-    if (!triangleValidation.isTriangle) {
-      resultText.textContent = triangleValidation.error;
-      return;
-    }
-
-    // Identify triangle type
-    const triangleType = TriangleIdentify(side1, side2, side3);
-    resultText.textContent = `The triangle is a ${triangleType}.`;
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector("form");
+    const resultText = document.querySelector(".type");
+    const errorText = document.querySelector(".error-type");
+    const errorContainer = document.querySelector(".error-container");
+    const whiteContainer = document.querySelectorAll(".white-container")[1];
+  
+    errorContainer.style.display = "none"; // Hide error container initially
+    whiteContainer.style.display = "none"; // Hide result container initially
+  
+    form.addEventListener("submit", (event) => {
+      event.preventDefault(); // Prevent page reload
+  
+      // Get input values
+      const side1 = parseFloat(document.getElementById("side1").value);
+      const side2 = parseFloat(document.getElementById("side2").value);
+      const side3 = parseFloat(document.getElementById("side3").value);
+  
+      // Validate inputs
+      const inputValidation = ValidateInputs(side1, side2, side3);
+      if (!inputValidation.isValid) {
+        errorText.textContent = inputValidation.error;
+        errorContainer.style.display = "block"; // Show error container
+        whiteContainer.style.display = "none"; // Hide white container
+        return;
+      }
+  
+      // Validate if it's a triangle
+      const triangleValidation = ValidateTriangle(side1, side2, side3);
+      if (!triangleValidation.isTriangle) {
+        errorText.textContent = triangleValidation.error;
+        errorContainer.style.display = "block"; // Show error container
+        whiteContainer.style.display = "none"; // Hide white container
+        return;
+      }
+  
+      // Identify triangle type
+      const triangleType = TriangleIdentify(side1, side2, side3);
+      resultText.textContent = `The triangle is a ${triangleType}.`;
+      errorContainer.style.display = "none"; // Hide error container
+      whiteContainer.style.display = "block"; // Show white container with result
+    });
   });
-});
-function updateTriangleImage(imageName) {
-  const triangleImage = document.querySelector(".triangle-image img");
-  triangleImage.src = `./Triangles/${imageName}`;
-}
+  
+  function updateTriangleImage(imageName) {
+    const triangleImage = document.querySelector(".triangle-image img");
+    triangleImage.src = `./Triangles/${imageName}`;
+  }
