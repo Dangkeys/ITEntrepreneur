@@ -140,7 +140,7 @@ function drawTriangle(type, sides) {
   const canvas = document.getElementById('triangleCanvas');
   if (!canvas) return;
   
-  // Increase canvas size to make the triangle larger
+  // Set canvas size
   canvas.width = 350;
   canvas.height = 300;
   
@@ -156,7 +156,7 @@ function drawTriangle(type, sides) {
   
   // Set scale factor based on the max side length to make triangle fill more of the canvas
   const maxSide = Math.max(...sides);
-  const scaleFactor = Math.min(width, height) * 0.8 / maxSide;
+  const baseScaleFactor = Math.min(width, height) * 0.6 / maxSide; // Reduced to ensure fit
   
   // Start with three points for the triangle
   let points = [];
@@ -167,9 +167,9 @@ function drawTriangle(type, sides) {
       // All sides equal, create perfect equilateral triangle
       const height_eq = (sides[0] * Math.sqrt(3)) / 2;
       points = [
-        {x: width/2, y: height/2 - height_eq * scaleFactor * 0.6},
-        {x: width/2 - sides[0] * scaleFactor / 2, y: height/2 + height_eq * scaleFactor * 0.4},
-        {x: width/2 + sides[0] * scaleFactor / 2, y: height/2 + height_eq * scaleFactor * 0.4}
+        {x: width/2, y: height/2 - height_eq * baseScaleFactor * 0.5},
+        {x: width/2 - sides[0] * baseScaleFactor / 2, y: height/2 + height_eq * baseScaleFactor * 0.5},
+        {x: width/2 + sides[0] * baseScaleFactor / 2, y: height/2 + height_eq * baseScaleFactor * 0.5}
       ];
       break;
       
@@ -186,52 +186,114 @@ function drawTriangle(type, sides) {
       const height_is = 2 * area / sides[baseIndex];
       
       points = [
-        {x: width/2, y: height/2 - height_is * scaleFactor * 0.7},
-        {x: width/2 - sides[baseIndex] * scaleFactor / 2, y: height/2 + height_is * scaleFactor * 0.3},
-        {x: width/2 + sides[baseIndex] * scaleFactor / 2, y: height/2 + height_is * scaleFactor * 0.3}
+        {x: width/2, y: height/2 - height_is * baseScaleFactor * 0.4},
+        {x: width/2 - sides[baseIndex] * baseScaleFactor / 2, y: height/2 + height_is * baseScaleFactor * 0.6},
+        {x: width/2 + sides[baseIndex] * baseScaleFactor / 2, y: height/2 + height_is * baseScaleFactor * 0.6}
       ];
       break;
       
     case "Right":
-      // Place the right angle at the bottom left
+      // Center the right triangle better
+      const rightScaleFactor = baseScaleFactor * 0.9;
+      const rightHeight = Math.min(sides[0], sides[1]) * rightScaleFactor;
+      const rightWidth = Math.max(sides[0], sides[1]) * rightScaleFactor;
+      
       points = [
-        {x: width/3, y: height/2 + sides[0] * scaleFactor / 2},
-        {x: width/3, y: height/2 - sides[1] * scaleFactor / 2},
-        {x: width/3 + sides[2] * scaleFactor, y: height/2 + sides[0] * scaleFactor / 2}
+        {x: width/2 - rightWidth/2, y: height/2 + rightHeight/2},  // Bottom left (right angle)
+        {x: width/2 - rightWidth/2, y: height/2 - rightHeight/2},  // Top left
+        {x: width/2 + rightWidth/2, y: height/2 + rightHeight/2}   // Bottom right
       ];
       break;
       
     case "Obtuse":
+      // Use a slightly larger scale factor for obtuse triangles
+      const obtuseScaleFactor = baseScaleFactor * 1.1;
+      
+      // Calculate a rough estimate of the obtuse triangle's dimensions
+      // Get the largest angle and its opposite side
+      let maxAngleIndexObt = angles.indexOf(Math.max(...angles));
+      let oppositeSide = sides[maxAngleIndexObt];
+      
+      // Generate triangle points with better centering
+      // First calculate temporary points to get dimensions
+      let tempPoints = generateTrianglePoints(sides, angles, obtuseScaleFactor);
+      
+      // Find the bounding box of the temporary triangle
+      let minX = Math.min(tempPoints[0].x, tempPoints[1].x, tempPoints[2].x);
+      let maxX = Math.max(tempPoints[0].x, tempPoints[1].x, tempPoints[2].x);
+      let minY = Math.min(tempPoints[0].y, tempPoints[1].y, tempPoints[2].y);
+      let maxY = Math.max(tempPoints[0].y, tempPoints[1].y, tempPoints[2].y);
+      
+      // Calculate offsets to center the triangle
+      let offsetX = width/2 - (minX + maxX)/2;
+      let offsetY = height/2 - (minY + maxY)/2;
+      
+      // Apply offsets to center the triangle
+      points = tempPoints.map(p => ({
+        x: p.x + offsetX,
+        y: p.y + offsetY
+      }));
+      break;
+      
     case "Acute":
     case "Scalene":
-      // Generate coordinates using angles and law of sines
-      // Use the largest angle for the bottom corner
-      let maxAngleIndex = angles.indexOf(Math.max(...angles));
-      let bottomPoint = {x: width/2, y: height * 0.75};
+      // Generate triangle points
+      let tempPointsAcute = generateTrianglePoints(sides, angles, baseScaleFactor);
       
-      // Calculate the other two points using trigonometry
-      // Arrange sides so that the largest angle is between sides[0] and sides[1]
-      let rearrangedSides = [
-        sides[(maxAngleIndex + 1) % 3],
-        sides[(maxAngleIndex + 2) % 3],
-        sides[maxAngleIndex]
-      ];
+      // Find the bounding box
+      let minXAcute = Math.min(tempPointsAcute[0].x, tempPointsAcute[1].x, tempPointsAcute[2].x);
+      let maxXAcute = Math.max(tempPointsAcute[0].x, tempPointsAcute[1].x, tempPointsAcute[2].x);
+      let minYAcute = Math.min(tempPointsAcute[0].y, tempPointsAcute[1].y, tempPointsAcute[2].y);
+      let maxYAcute = Math.max(tempPointsAcute[0].y, tempPointsAcute[1].y, tempPointsAcute[2].y);
       
-      let angle1 = calculateAngles(rearrangedSides)[0];
-      let angle2 = calculateAngles(rearrangedSides)[1];
+      // Calculate offsets to center the triangle
+      let offsetXAcute = width/2 - (minXAcute + maxXAcute)/2;
+      let offsetYAcute = height/2 - (minYAcute + maxYAcute)/2;
       
-      points = [
-        bottomPoint,
-        {
-          x: bottomPoint.x - rearrangedSides[0] * scaleFactor * Math.cos(angle2 * Math.PI/180),
-          y: bottomPoint.y - rearrangedSides[0] * scaleFactor * Math.sin(angle2 * Math.PI/180)
-        },
-        {
-          x: bottomPoint.x + rearrangedSides[1] * scaleFactor * Math.cos(angle1 * Math.PI/180),
-          y: bottomPoint.y - rearrangedSides[1] * scaleFactor * Math.sin(angle1 * Math.PI/180)
-        }
-      ];
+      // Apply offsets to center the triangle
+      points = tempPointsAcute.map(p => ({
+        x: p.x + offsetXAcute,
+        y: p.y + offsetYAcute
+      }));
       break;
+  }
+  
+  // Ensure all points are within canvas bounds with padding
+  const padding = 30; // Padding from canvas edges in pixels
+  let allPointsInBounds = points.every(p => 
+    p.x >= padding && p.x <= width - padding && 
+    p.y >= padding && p.y <= height - padding
+  );
+  
+  // If any point is outside the bounds, rescale the triangle
+  if (!allPointsInBounds) {
+    // Calculate the current bounds
+    let minX = Math.min(...points.map(p => p.x));
+    let maxX = Math.max(...points.map(p => p.x));
+    let minY = Math.min(...points.map(p => p.y));
+    let maxY = Math.max(...points.map(p => p.y));
+    
+    // Calculate required scaling
+    const currentWidth = maxX - minX;
+    const currentHeight = maxY - minY;
+    const availableWidth = width - 2 * padding;
+    const availableHeight = height - 2 * padding;
+    
+    const scaleX = availableWidth / currentWidth;
+    const scaleY = availableHeight / currentHeight;
+    const rescale = Math.min(scaleX, scaleY, 1); // Don't upscale, only downscale if needed
+    
+    if (rescale < 1) {
+      // Calculate the center of the triangle
+      const centerX = (minX + maxX) / 2;
+      const centerY = (minY + maxY) / 2;
+      
+      // Rescale all points around the center
+      points = points.map(p => ({
+        x: centerX + (p.x - centerX) * rescale,
+        y: centerY + (p.y - centerY) * rescale
+      }));
+    }
   }
   
   // Draw the triangle outline
@@ -264,11 +326,6 @@ function drawTriangle(type, sides) {
     const len1 = Math.sqrt(v1x * v1x + v1y * v1y);
     const len2 = Math.sqrt(v2x * v2x + v2y * v2y);
     
-    const n1x = v1x / len1;
-    const n1y = v1y / len1;
-    const n2x = v2x / len2;
-    const n2y = v2y / len2;
-    
     // Calculate angle between vectors
     let angle = Math.atan2(v2y, v2x) - Math.atan2(v1y, v1x);
     if (angle < 0) angle += 2 * Math.PI;
@@ -289,7 +346,7 @@ function drawTriangle(type, sides) {
     {x: (points[2].x + points[0].x) / 2, y: (points[2].y + points[0].y) / 2}
   ];
   
-  // Add side labels with proper positioning similar to the example image
+  // Add side labels with proper positioning
   ctx.fillStyle = '#000000';
   ctx.font = '12px Arial';
   
@@ -301,8 +358,8 @@ function drawTriangle(type, sides) {
     const length = Math.sqrt(dx * dx + dy * dy);
     
     // Calculate perpendicular offset direction
-    const normalX = -dy / length * 25; // Increase offset to move further away
-    const normalY = dx / length * 25;
+    const normalX = -dy / length * 20; // Offset distance
+    const normalY = dx / length * 20;
     
     // First draw the "side #" label
     ctx.textAlign = 'center';
@@ -313,9 +370,9 @@ function drawTriangle(type, sides) {
       midpoints[i].y + normalY
     );
     
-    // Then draw the length value below the label
+    // Then draw the length value below the label - display original value without rounding
     ctx.fillText(
-      sides[i].toFixed(1),
+      `${sides[i]}`,
       midpoints[i].x + normalX,
       midpoints[i].y + normalY + 15 // Position below side label
     );
@@ -358,6 +415,34 @@ function drawTriangle(type, sides) {
   }
 }
 
+// Helper function to generate initial triangle points based on sides and angles
+function generateTrianglePoints(sides, angles, scaleFactor) {
+  // Start with a base point
+  const basePoint = {x: 100, y: 200};
+  
+  // Find the angle with the largest value (usually the obtuse angle if present)
+  const maxAngleIndex = angles.indexOf(Math.max(...angles));
+  
+  // Get the two sides connected to the largest angle
+  const side1 = sides[(maxAngleIndex + 1) % 3];
+  const side2 = sides[(maxAngleIndex + 2) % 3];
+  
+  // Calculate the angle between these sides (in radians)
+  const includedAngle = angles[maxAngleIndex] * Math.PI / 180;
+  
+  // Calculate the coordinates of the other two points
+  const point2 = {
+    x: basePoint.x + side1 * scaleFactor,
+    y: basePoint.y
+  };
+  
+  const point3 = {
+    x: basePoint.x + side2 * scaleFactor * Math.cos(includedAngle),
+    y: basePoint.y - side2 * scaleFactor * Math.sin(includedAngle)
+  };
+  
+  return [basePoint, point2, point3];
+}
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.querySelector("form");
   const resultText = document.querySelector(".type");
