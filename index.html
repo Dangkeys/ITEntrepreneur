@@ -9,10 +9,6 @@
 </head>
 
 <body>
-    <div class="triangle-calculator">
-
-
-    </div>
     <div class="container">
         <h1>Triangle Type <br>Calculator</h1>
         <div class="flex-container">
@@ -35,11 +31,11 @@
                 </div>
             </form>
 
-            <div class="white-container">
+            <div class="white-container result-container">
                 <div class="result">
                     <b>Triangle Type Result</b>
-                    <div class="triangle-image">
-                        <img src="./Triangles/equilateral.png" alt="Triangle">
+                    <div class="triangle-canvas-container">
+                        <canvas id="triangleCanvas" width="350" height="300"></canvas>
                     </div>
                     <p class="type">Equilateral Triangle</p>
                 </div>
@@ -52,8 +48,9 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        <script src="index.js"></script>
+    <script src="index.js"></script>
 </body>
 
 </html>
