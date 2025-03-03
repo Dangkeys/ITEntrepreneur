@@ -89,9 +89,9 @@ function TriangleIdentify(side1, side2, side3) {
 
   // Check for Acute Triangle
   if (
-    side1 ** 2 > side2 ** 2 + side3 ** 2 ||
-    side2 ** 2 > side1 ** 2 + side3 ** 2 ||
-    side3 ** 2 > side1 ** 2 + side2 ** 2
+    side1 ** 2 < side2 ** 2 + side3 ** 2 ||
+    side2 ** 2 < side1 ** 2 + side3 ** 2 ||
+    side3 ** 2 < side1 ** 2 + side2 ** 2
   ) {
     updateTriangleImage("acute.png");
     return Output({ result: "Acute Triangle/สามเหลี่ยมมุมแหลม" });
@@ -99,9 +99,9 @@ function TriangleIdentify(side1, side2, side3) {
 
   // Check for Obtuse Triangle
   if (
-    side1 ** 2 < side2 ** 2 + side3 ** 2 ||
-    side2 ** 2 < side1 ** 2 + side3 ** 2 ||
-    side3 ** 2 < side1 ** 2 + side2 ** 2
+    side1 ** 2 > side2 ** 2 + side3 ** 2 ||
+    side2 ** 2 > side1 ** 2 + side3 ** 2 ||
+    side3 ** 2 > side1 ** 2 + side2 ** 2
   ) {
     updateTriangleImage("obtuse.png");
     return Output({ result: "Obtuse Triangle/สามเหลี่ยมมุมป้าน" });
