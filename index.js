@@ -65,51 +65,35 @@ function ValidateTriangle(side1, side2, side3) {
 }
 
 function TriangleIdentify(side1, side2, side3) {
-  // Check for Equilateral Triangle
-  if (side1 === side2 && side2 === side3) {
-    updateTriangleImage("equilateral.png");
-    return Output({ result: "Equilateral Triangle/สามเหลี่ยมด้านเท่า" });
-  }
+  let [a, b, c] = [side1, side2, side3].sort((a, b) => a - b);
 
-  // Check for Isosceles Triangle
-  if (side1 === side2 || side1 === side3 || side2 === side3) {
-    updateTriangleImage("isosceles.png");
-    return Output({ result: "Isosceles Triangle/สามเหลี่ยมหน้าจั่ว" });
+  if (a === b && b === c) {
+    updateTriangleImage("equilateral.png");
+    return Output({ result: "Equilateral Triangle" });
   }
 
   // Check for Right Triangle
-  if (
-    side1 ** 2 === side2 ** 2 + side3 ** 2 ||
-    side2 ** 2 === side1 ** 2 + side3 ** 2 ||
-    side3 ** 2 === side1 ** 2 + side2 ** 2
-  ) {
+  if (c ** 2 === a ** 2 + b ** 2) {
     updateTriangleImage("right.png");
-    return Output({ result: "Right Triangle/สามเหลี่ยมมุมฉาก" });
+    return Output({ result: "Right Triangle" });
   }
 
-  // Check for Acute Triangle
-  if (
-    side1 ** 2 < side2 ** 2 + side3 ** 2 ||
-    side2 ** 2 < side1 ** 2 + side3 ** 2 ||
-    side3 ** 2 < side1 ** 2 + side2 ** 2
-  ) {
-    updateTriangleImage("acute.png");
-    return Output({ result: "Acute Triangle/สามเหลี่ยมมุมแหลม" });
+  let mainType;
+  if (a === b || b === c) {
+    mainType = "Isosceles Triangle";
+    updateTriangleImage("isosceles.png");
+  } else {
+    mainType = "Scalene Triangle";
+    updateTriangleImage("scalene.png");
   }
 
-  // Check for Obtuse Triangle
-  if (
-    side1 ** 2 > side2 ** 2 + side3 ** 2 ||
-    side2 ** 2 > side1 ** 2 + side3 ** 2 ||
-    side3 ** 2 > side1 ** 2 + side2 ** 2
-  ) {
-    updateTriangleImage("obtuse.png");
-    return Output({ result: "Obtuse Triangle/สามเหลี่ยมมุมป้าน" });
+  let addOnType;
+  if (c ** 2 > a ** 2 + b ** 2) {
+    addOnType = "Obtuse";
+  } else {
+    addOnType = "Acute";
   }
-
-  // Fallback case Scalene Triangle
-  updateTriangleImage("scalene.png");
-  return Output({ result: "Scalene Triangle/สามเหลี่ยมด้านไม่เท่า" });
+  return Output({ result: `${addOnType} ${mainType}` });
 }
 
 //Show output
