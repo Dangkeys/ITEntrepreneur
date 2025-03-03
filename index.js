@@ -1,14 +1,14 @@
 // Input Validation Module
 function ValidateInputs(side1, side2, side3) {
   try {
-    // Check if there are exactly three inputs
-    if (arguments.length !== 3) {
+    
+    // Check if all inputs are numbers (redundant with the initial check but keeping for robustness)
+    const sides = [side1, side2, side3];
+    // Check if there are any undefined, null, NaN, or empty inputs
+    if (sides.some((side) => side === undefined || side === null || side === "")) {
       throw new Error("Please complete all fields with valid numbers.");
     }
-
-    // Check if all inputs are numbers
-    const sides = [side1, side2, side3];
-    if (!sides.every((side) => typeof side === "number")) {
+    if (sides.some(side => isNaN(side))) {
       throw new Error("Input numbers only, please.");
     }
 
@@ -136,17 +136,68 @@ document.addEventListener('DOMContentLoaded', () => {
   form.addEventListener("submit", (event) => {
     event.preventDefault(); // Prevent page reload
 
-    // Get input values
-    const side1 = parseFloat(document.getElementById("side1").value);
-    const side2 = parseFloat(document.getElementById("side2").value);
-    const side3 = parseFloat(document.getElementById("side3").value);
-
-    // Validate inputs
-    const inputValidation = ValidateInputs(side1, side2, side3);
-    if (!inputValidation.isValid) {
-      errorText.textContent = inputValidation.error;
-      errorContainer.style.display = "block"; // Show error container
-      whiteContainer.style.display = "none"; // Hide white container
+    // Get input values as strings first
+    const side1Input = document.getElementById("side1").value.trim();
+    const side2Input = document.getElementById("side2").value.trim();
+    const side3Input = document.getElementById("side3").value.trim();
+    
+    // Array of input strings for validation
+    const sideInputs = [side1Input, side2Input, side3Input];
+    
+    // 1. Check if any field is empty
+    if (sideInputs.some(side => side === "")) {
+      errorText.textContent = "Please complete all fields with valid numbers.";
+      errorContainer.style.display = "block";
+      whiteContainer.style.display = "none";
+      return;
+    }
+    
+    // 2. Check if inputs contain only digits and at most one decimal point
+    // First, check for non-numeric characters (except decimal point)
+    if (!sideInputs.every(side => /^[0-9.]+$/.test(side))) {
+      errorText.textContent = "Input numbers only, please.";
+      errorContainer.style.display = "block";
+      whiteContainer.style.display = "none";
+      return;
+    }
+    
+    // 3. Check for correct number format (no multiple decimal points)
+    if (!sideInputs.every(side => {
+      const decimalCount = (side.match(/\./g) || []).length;
+      return decimalCount <= 1;
+    })) {
+      errorText.textContent = "Please input a valid number, for example, 3.5";
+      errorContainer.style.display = "block";
+      whiteContainer.style.display = "none";
+      return;
+    }
+    
+    // 4. Check decimal places limit (max 2)
+    if (!sideInputs.every(side => {
+      const parts = side.split('.');
+      return parts.length === 1 || (parts.length === 2 && parts[1].length <= 2);
+    })) {
+      errorText.textContent = "Decimal numbers should not exceed two decimal places.";
+      errorContainer.style.display = "block";
+      whiteContainer.style.display = "none";
+      return;
+    }
+    
+    // Now convert to numbers for further processing
+    const side1 = parseFloat(side1Input);
+    const side2 = parseFloat(side2Input);
+    const side3 = parseFloat(side3Input);
+    
+    // 5. Check value range (0-10000)
+    const sides = [side1, side2, side3];
+    if (!sides.every(side => side > 0 && side <= 10000)) {
+      if (sides.some(side => side <= 0)) {
+        errorText.textContent = "Side length cannot be 0 or negative.";
+      } else {
+        errorText.textContent = "Error: The length exceeds the allowed limit (10,000).";
+      }
+      errorContainer.style.display = "block";
+      whiteContainer.style.display = "none";
       return;
     }
 
