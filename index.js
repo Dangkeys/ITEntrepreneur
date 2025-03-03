@@ -152,19 +152,10 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     
-    // 2. Check if inputs contain only digits and at most one decimal point
-    // First, check for non-numeric characters (except decimal point)
-    if (!sideInputs.every(side => /^[0-9.]+$/.test(side))) {
-      errorText.textContent = "Input numbers only, please.";
-      errorContainer.style.display = "block";
-      whiteContainer.style.display = "none";
-      return;
-    }
-    
-    // 3. Check for correct number format (no multiple decimal points)
-    if (!sideInputs.every(side => {
+    // 2. Check for multiple decimal points first
+    if (sideInputs.some(side => {
       const decimalCount = (side.match(/\./g) || []).length;
-      return decimalCount <= 1;
+      return decimalCount > 1;
     })) {
       errorText.textContent = "Please input a valid number, for example, 3.5";
       errorContainer.style.display = "block";
@@ -172,7 +163,24 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     
-    // 4. Check decimal places limit (max 2)
+    // 3. Check if inputs are negative numbers
+    // Allow negative sign at the beginning for proper parsing
+    if (sideInputs.some(side => side.startsWith('-'))) {
+      errorText.textContent = "Side length cannot be 0 or negative.";
+      errorContainer.style.display = "block";
+      whiteContainer.style.display = "none";
+      return;
+    }
+    
+    // 4. Check if inputs contain only digits and at most one decimal point
+    if (!sideInputs.every(side => /^[0-9.]+$/.test(side))) {
+      errorText.textContent = "Input numbers only, please.";
+      errorContainer.style.display = "block";
+      whiteContainer.style.display = "none";
+      return;
+    }
+    
+    // 5. Check decimal places limit (max 2)
     if (!sideInputs.every(side => {
       const parts = side.split('.');
       return parts.length === 1 || (parts.length === 2 && parts[1].length <= 2);
@@ -188,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const side2 = parseFloat(side2Input);
     const side3 = parseFloat(side3Input);
     
-    // 5. Check value range (0-10000)
+    // 6. Check value range (0-10000)
     const sides = [side1, side2, side3];
     if (!sides.every(side => side > 0 && side <= 10000)) {
       if (sides.some(side => side <= 0)) {
