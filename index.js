@@ -77,26 +77,20 @@ function TriangleIdentify(side1, side2, side3) {
     return Output({ result: "Isosceles Triangle/สามเหลี่ยมหน้าจั่ว" });
   }
 
-  // Check for Scalene Triangle
-  if (side1 !== side2 && side2 !== side3 && side1 !== side3) {
-    updateTriangleImage("scalene.png");
-    return Output({ result: "Scalene Triangle/สามเหลี่ยมด้านไม่เท่า" });
-  }
-
   // Check for Right Triangle
   if (
     side1 ** 2 === side2 ** 2 + side3 ** 2 ||
     side2 ** 2 === side1 ** 2 + side3 ** 2 ||
     side3 ** 2 === side1 ** 2 + side2 ** 2
   ) {
-    updateTriangleImage('right.png');
+    updateTriangleImage("right.png");
     return Output({ result: "Right Triangle/สามเหลี่ยมมุมฉาก" });
   }
 
   // Check for Acute Triangle
   if (
-    side1 ** 2 < side2 ** 2 + side3 ** 2 &&
-    side2 ** 2 < side1 ** 2 + side3 ** 2 &&
+    side1 ** 2 < side2 ** 2 + side3 ** 2 ||
+    side2 ** 2 < side1 ** 2 + side3 ** 2 ||
     side3 ** 2 < side1 ** 2 + side2 ** 2
   ) {
     updateTriangleImage("acute.png");
@@ -113,17 +107,18 @@ function TriangleIdentify(side1, side2, side3) {
     return Output({ result: "Obtuse Triangle/สามเหลี่ยมมุมป้าน" });
   }
 
-  // Fallback case (should not be reached)
-  return Output({ exception: "Triangle type doesn't match" });
+  // Fallback case Scalene Triangle
+  updateTriangleImage("scalene.png");
+  return Output({ result: "Scalene Triangle/สามเหลี่ยมด้านไม่เท่า" });
 }
 
 //Show output
 function Output(message) {
   if ("result" in message) return message.result;
-  if ("exception" in message) throw new Error(message.exception);
+  throw new Error(message.exception);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   const form = document.querySelector("form");
   const resultText = document.querySelector(".type");
   const errorText = document.querySelector(".error-type");
